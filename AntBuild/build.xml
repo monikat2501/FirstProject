@@ -1,0 +1,34 @@
+<project name = "test" default = "run" basedir = ".">
+
+	<property name = "x" value = "10"/>
+	<property name = "srcdir" value = "source"/>
+	<property name = "builddir" value = "output"/>
+	<property name = "clsdir" value = "cls"/>
+	<property name = "jardir" value = "jar"/>
+	<property name = "filename" value = "Hello"/>		
+	
+	<target name = "test">
+          <echo>value of x i ${x}</echo>
+        </target>
+	
+	<target name = "compile">
+	 <delete dir = "${builddir}"/>
+	 <echo>Java tasks</echo>
+	 <mkdir dir = "${builddir}/${clsdir}"/>
+	  <javac includeantruntime = "false" srcdir = "${srcdir}" destdir = "${builddir}/${clsdir}"/>
+	  </target>
+
+	<target name = "package" depends = "compile">
+	 <mkdir dir = "${builddir}/${jardir}"/>
+	  <jar basedir = "${builddir}/${clsdir}" destfile = "${builddir}/${jardir}/${filename}.jar">
+	   <manifest>
+	     <attribute name = "Main-Class" value = "${filename}"/>
+	     </manifest>
+          </jar>
+	</target>
+
+	<target name = "run" depends = "package">
+	 <java jar = "${builddir}/${jardir}/${filename}.jar" fork = 'true'/>
+	</target> 
+          
+</project>
